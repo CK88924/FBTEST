@@ -71,8 +71,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="登出" />
+            <Button
+                android:id="@+id/music"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="音樂" />
+
+            <Button
+                android:id="@+id/fcm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="推播" />
         </TableRow>
 
 
     </TableLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

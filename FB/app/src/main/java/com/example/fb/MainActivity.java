@@ -2,9 +2,13 @@ package com.example.fb;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +41,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Random;
+
 import static com.facebook.internal.FacebookDialogFragment.TAG;
 
 public class MainActivity extends AppCompatActivity {
@@ -50,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG2 = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
     private GoogleSignInClient mGoogleSignInClient;
-    private Button logout;
+    private Button logout,music,fcm;
 
 
     @Override
@@ -130,8 +136,31 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        music = (Button)findViewById(R.id.music);
+        music.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, Music.class);
+                startActivity(intent);
 
-    }
+
+            }
+        });
+
+        fcm = (Button)findViewById(R.id.fcm);
+        fcm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, Fcm.class);
+                startActivity(intent);
+
+
+            }
+        });
+
+    }//OnCreate()
 
     private void handleFacebookAccessToken(AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
@@ -156,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
-    }
+    }//handleFacebookAccessToken()
 
 
 
@@ -181,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
+    }//onActivityResult()
 
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
@@ -192,22 +221,25 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG2, "signInWithCredential:success");
+
                             FirebaseUser user = mAuth2.getCurrentUser();
                             setTitle(user.getUid());
                             updateUI(user);
-                        } else {
+                        } //if()
+
+                        else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG2, "signInWithCredential:failure", task.getException());
                             updateUI(null);
-                        }
+                        } //else()
                     }
                 });
-    }
+    }//firebaseAuthWithGoogle()
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
+    }//signIn()
 
 
     public void onStart() {
@@ -218,8 +250,9 @@ public class MainActivity extends AppCompatActivity {
         mAuth2 = FirebaseAuth.getInstance();
         FirebaseUser currentUser2 = mAuth2.getCurrentUser();
         updateUI(currentUser2);
-    }
+    }//onStart()
     private void updateUI(FirebaseUser user) {
 
-    }
-}
+    }//updateUI()
+
+}//main()
